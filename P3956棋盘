@@ -1,0 +1,52 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+#define max 0x7fffffff
+int dx[4]={1,0,-1,0};
+int dy[4]={0,1,0,-1};
+int ch[110][110],f[110][110];
+int m,n,mo,ans=max;
+void dfs(int a,int b,int sum,bool flag)
+{
+	if(a<1||b<1||a>m||b>m)return;//出界，剪枝 
+	if(sum>=f[a][b])return;//非最优，剪枝 
+	f[a][b]=sum;
+	if(a==m&&b==m)
+	{
+		if(sum<ans)ans=sum;
+		return;
+	}
+	for(int i=0;i<=3;i++)
+	{
+		if(ch[a+dx[i]][b+dy[i]])
+		{
+			if(ch[a+dx[i]][b+dy[i]]==ch[a][b]) 
+			dfs(a+dx[i],b+dy[i],sum,false);
+			else dfs(a+dx[i],b+dy[i],sum+1,false);
+		}
+		else if(!flag)
+		{
+			ch[a+dx[i]][b+dy[i]]=ch[a][b];
+			dfs(a+dx[i],b+dy[i],sum+2,true);
+			ch[a+dx[i]][b+dy[i]]=0;
+		}
+	}
+}
+int main()
+{
+	//freopen("chess.in","r","stdin");
+	//freopen("chess.out","w","stdout");
+	memset(f,0x7f,sizeof(f));
+	cin>>m>>n;
+	for(int i=1;i<=n;i++)
+	{
+		
+		int x,y,c;
+		cin>>x>>y>>c;
+		ch[x][y]=c+1;
+	}
+	dfs(1,1,0,false);
+	printf("%d",ans==max?-1:ans);
+	return 0;
+}
