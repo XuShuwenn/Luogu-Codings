@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+#include<cmath>
+#define max maxx
+#define min minx
+#define ll long long
+using namespace std;
+ll n,m,c[100005],p1,p2,s1,s2,ql,qh;
+ll max(ll a,ll b)
+{
+    if(a>b) return a;
+    else return b;
+}
+ll min(ll a,ll b)
+{
+    if(a<b) return a;
+    else return b;
+}
+int main()
+{
+	//freopen("fight.in","r",stdin);
+	//freopen("fight.out","w",stdout);
+	ll i;
+	cin>>n;
+	for(i=1;i<=n;i++)
+	{
+		cin>>c[i];
+	}
+	cin>>m>>p1>>s1>>s2;
+	c[p1]+=s1;
+	for(i=1;i<m;i++)
+        ql+=c[i]*(m-i);
+    for(i=m+1;i<=n;i++)
+        qh+=c[i]*(i-m);
+    if(ql==qh)
+        cout<<m<<endl;
+    else if(ql<qh)
+    {
+        p2=m-(qh-ql)/s2;
+        p2=max(1,p2);
+        p2=min(n,p2);
+        if(p2>1 && (abs(ql+s2*(m-p2+1)-qh)<=abs(qh-ql-s2*(m-p2))))
+            cout<<p2-1<<endl;
+        else cout<<p2<<endl;
+    } 
+    else
+    {
+        p2=m+(ql-qh)/s2;
+        p2=max(1,p2);
+        p2=min(n,p2);
+        if(p2<n && (abs(qh+s2*(p2+1-m)-ql)<abs(qh+s2*(p2-m)-ql)))
+            cout<<p2+1<<endl;
+        else cout<<p2<<endl;
+    }
+    return 0;
+}
